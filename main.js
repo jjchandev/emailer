@@ -53,6 +53,12 @@ async function run() {
   for (let i = 0; i < rows.length; i++) {
     const [link, companyName, website, phone, email, status] = rows[i];
 
+      // Skip if email is missing or empty
+  if (!email || email.trim() === '') {
+    console.log(`Skipping row ${i + 2} because email is empty`);
+    continue;
+  }
+
     if (status?.toLowerCase().trim() === 'sent') continue; // skip if already sent
 
     const mailOptions = {
