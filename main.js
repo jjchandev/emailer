@@ -87,6 +87,7 @@ async function run() {
     }
 
     // Update status regardless of testing or live mode
+    if (!TESTING_MODE) {
     const statusCell = `AutomatedContacts!F${i + 2}`; // Column F = Status
     await sheets.spreadsheets.values.update({
       spreadsheetId: config.SHEET_ID,
@@ -96,6 +97,7 @@ async function run() {
         values: [['sent']],
       },
     });
+  }
   }
 }
 
