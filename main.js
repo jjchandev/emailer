@@ -49,10 +49,11 @@ async function run() {
     },
   });
 
-  // Send emails and update status
+  // Iterate through each row and process
   for (let i = 0; i < rows.length; i++) {
-    const [companyName, email, status] = rows[i];
-    if (status?.toLowerCase() !== 'no action') continue;
+    const [link, companyName, website, phone, email, status] = rows[i];
+
+    if (status?.toLowerCase().trim() === 'sent') continue; // skip if already sent
 
     const mailOptions = {
       from: config.OAUTH.user,
@@ -63,29 +64,32 @@ async function run() {
 
     if (TESTING_MODE) {
       console.log(`🔍 TEST EMAIL`);
+      console.log(`Row: ${i + 2}`);
       console.log(`From: ${mailOptions.from}`);
       console.log(`To: ${mailOptions.to}`);
       console.log(`Subject: ${mailOptions.subject}`);
       console.log(`Body:\n${mailOptions.text}`);
       console.log('---');
-      continue; // Skip sending and sheet update
+    } else {
+      try {
+        await transporter.sendMail(mailOptions);
+        console.log(`✅ Email sent to ${companyName} <${email}>`);
+      } catch (err) {
+        console.error(`❌ Failed to send to ${email}: ${err.message}`);
+        continue; // skip updating status if email failed
+      }
     }
 
-    try {
-      await transporter.sendMail(mailOptions);
-      console.log(`✅ Email sent to ${companyName} <${email}>`);
-
-      await sheets.spreadsheets.values.update({
-        spreadsheetId: config.SHEET_ID,
-        range: `Sheet1!C${i + 2}`,
-        valueInputOption: 'RAW',
-        requestBody: {
-          values: [['sent']],
-        },
-      });
-    } catch (err) {
-      console.error(`❌ Failed to send to ${email}: ${err.message}`);
-    }
+    // Update status regardless of testing or live mode
+    const statusCell = `Sheet1!F${i + 2}`; // Column F = Status
+    await sheets.spreadsheets.values.update({
+      spreadsheetId: config.SHEET_ID,
+      range: statusCell,
+      valueInputOption: 'RAW',
+      requestBody: {
+        values: [['sent']],
+      },
+    });
   }
 }
 
