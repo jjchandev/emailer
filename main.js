@@ -1,24 +1,20 @@
-require('dotenv').config();
 const { google } = require('googleapis');
 const nodemailer = require('nodemailer');
 const fs = require('fs');
-
-// === CONFIG ===
-const SHEET_ID = 'your_google_sheet_id';
-const RANGE = 'Sheet1!A2:C'; // Adjust as needed
+const config = require('./config');
 
 // === AUTH ===
 const auth = new google.auth.GoogleAuth({
-  keyFile: 'credentials.json',
-  scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+  keyFile: config.GOOGLE_CREDENTIALS_FILE,
+  scopes: config.GOOGLE_API_SCOPES,
 });
 
 // === EMAIL SETUP ===
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: process.env.GMAIL_USER,
-    pass: process.env.GMAIL_PASS, // App Password if using 2FA
+    user: config.GMAIL.user,
+    pass: config.GMAIL.pass,
   },
 });
 
@@ -28,8 +24,8 @@ async function run() {
   const sheets = google.sheets({ version: 'v4', auth: client });
 
   const res = await sheets.spreadsheets.values.get({
-    spreadsheetId: SHEET_ID,
-    range: RANGE,
+    spreadsheetId: config.SHEET_ID,
+    range: config.SHEET_RANGE,
   });
 
   const rows = res.data.values;
@@ -45,10 +41,10 @@ async function run() {
     if (status?.toLowerCase() !== 'no action') continue;
 
     const mailOptions = {
-      from: process.env.GMAIL_USER,
+      from: config.GMAIL.user,
       to: email,
-      subject: `Special Offer for ${companyName}`,
-      text: `Hi ${companyName},\n\nWe wanted to reach out with a special opportunity for your business.\n\nPlease reply if you're interested.\n\nBest,\nYour Company`,
+      subject: config.EMAIL_TEMPLATE.subject(companyName),
+      text: config.EMAIL_TEMPLATE.body(companyName),
     };
 
     try {
@@ -57,7 +53,7 @@ async function run() {
 
       // Update status in the sheet
       await sheets.spreadsheets.values.update({
-        spreadsheetId: SHEET_ID,
+        spreadsheetId: config.SHEET_ID,
         range: `Sheet1!C${i + 2}`,
         valueInputOption: 'RAW',
         requestBody: {
