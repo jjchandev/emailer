@@ -5,7 +5,7 @@ const gmailCreds = require('./gmailapicredentials.json').installed;
 module.exports = {
   // Google Sheets
   SHEET_ID: '1Q4OxZ6hjoUjzPuDkcJi6rlM4FNjWYHe_Kd-vDgupp98',
-  SHEET_RANGE: 'Sheet1!A2:C',
+  SHEET_RANGE: 'AutomatedContacts!A2:F',
   GOOGLE_API_SCOPES: ['https://www.googleapis.com/auth/spreadsheets'],
 
   // Sheets API - Service Account JSON file
