@@ -1,6 +1,6 @@
 require('dotenv').config();
 const path = require('path');
-const gmailCreds = require(path.resolve('./gmailapicredentials.json'));
+const gmailCreds = require('./gmailapicredentials.json').installed;
 
 module.exports = {
   // Google Sheets
