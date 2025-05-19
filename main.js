@@ -51,43 +51,39 @@ async function run() {
 
   // Iterate through each row and process
   for (let i = 0; i < rows.length; i++) {
-    const [link, companyName, website, phone, email, status] = rows[i];
+  const [link, companyName, website, phone, email, status] = rows[i];
 
-      // Skip if email is missing or empty
-  if (!email || email.trim() === '') {
-    console.log(`Skipping row ${i + 2} because email is empty`);
-    continue;
+  if (status?.toLowerCase().trim() === 'sent') continue; // skip if already sent
+  if (!email) continue; // skip if email undefined
+
+  // Override recipient in test mode
+  const recipientEmail = TESTING_MODE ? 'jiajiechandev@gmail.com' : email;
+
+  const mailOptions = {
+    from: config.OAUTH.user,
+    to: recipientEmail,
+    subject: config.EMAIL_TEMPLATE.subject(companyName),
+    text: config.EMAIL_TEMPLATE.body(companyName),
+  };
+
+  // Log email info always
+  console.log(`🔍 EMAIL DETAILS`);
+  console.log(`Row: ${i + 2}`);
+  console.log(`From: ${mailOptions.from}`);
+  console.log(`To: ${mailOptions.to}`);
+  console.log(`Subject: ${mailOptions.subject}`);
+  console.log(`Body:\n${mailOptions.text}`);
+  console.log('---');
+
+  try {
+    await transporter.sendMail(mailOptions);
+    console.log(`✅ Email sent to ${companyName} <${recipientEmail}>`);
+  } catch (err) {
+    console.error(`❌ Failed to send to ${recipientEmail}: ${err.message}`);
+    continue; // skip updating status if email failed
   }
 
-    if (status?.toLowerCase().trim() === 'sent') continue; // skip if already sent
-
-    const mailOptions = {
-      from: config.OAUTH.user,
-      to: email,
-      subject: config.EMAIL_TEMPLATE.subject(companyName),
-      text: config.EMAIL_TEMPLATE.body(companyName),
-    };
-
-    if (TESTING_MODE) {
-      console.log(`🔍 TEST EMAIL`);
-      console.log(`Row: ${i + 2}`);
-      console.log(`From: ${mailOptions.from}`);
-      console.log(`To: ${mailOptions.to}`);
-      console.log(`Subject: ${mailOptions.subject}`);
-      console.log(`Body:\n${mailOptions.text}`);
-      console.log('---');
-    } else {
-      try {
-        await transporter.sendMail(mailOptions);
-        console.log(`✅ Email sent to ${companyName} <${email}>`);
-      } catch (err) {
-        console.error(`❌ Failed to send to ${email}: ${err.message}`);
-        continue; // skip updating status if email failed
-      }
-    }
-
-    // Update status regardless of testing or live mode
-    if (!TESTING_MODE) {
+  if (!TESTING_MODE) {
     const statusCell = `AutomatedContacts!F${i + 2}`; // Column F = Status
     await sheets.spreadsheets.values.update({
       spreadsheetId: config.SHEET_ID,
@@ -98,7 +94,7 @@ async function run() {
       },
     });
   }
-  }
+}
 }
 
 run().catch(console.error);
