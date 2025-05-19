@@ -18,7 +18,22 @@ module.exports = {
   SHEET_ID: '1Q4OxZ6hjoUjzPuDkcJi6rlM4FNjWYHe_Kd-vDgupp98',
   SHEET_RANGE: 'AutomatedContacts!A2:F',
   EMAIL_TEMPLATE: {
-    subject: (name) => `Hi ${name}, we'd love to connect`,
-    body: (name) => `Hello ${name},\n\nHere's your message.\n\nBest,\nTeam`,
-  },
+  subject: (name) => `Hi ${name}, we'd love to connect`,
+  body: (name) => 
+`Hi ${name},
+
+I came across your Instagram profile and wanted to reach out personally. I'm Binh Le from Gold Web Designs, and I specialize in helping roofing companies build high-performing websites that bring in real leads — not just likes.
+
+Whether you're starting from scratch or looking to upgrade what you’ve got, I’d love to offer you a free 30-minute strategy session. We’ll talk about how your website can work harder for you — from showcasing past projects to turning visitors into paying customers.
+
+👉 Book a time that works for you: https://calendly.com/goldwebdesigns5/30min
+
+No pressure — just practical insights from someone who understands the digital needs of service businesses like yours.
+
+Looking forward to chatting with you,
+Binh Le
+WhatsApp: +84 909 427 085
+
+[goldwebdesigns](https://www.goldwebdesigns.com)`
+},
 };
