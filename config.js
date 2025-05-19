@@ -1,28 +1,24 @@
-require('dotenv').config();
+const fs = require('fs');
 const path = require('path');
+
+// Gmail OAuth2 credentials and token
 const gmailCreds = require('./gmailapicredentials.json').installed;
+const gmailToken = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'gmail_token.json')));
 
 module.exports = {
-  // Google Sheets
-  SHEET_ID: '1Q4OxZ6hjoUjzPuDkcJi6rlM4FNjWYHe_Kd-vDgupp98',
-  SHEET_RANGE: 'AutomatedContacts!A2:F',
-  GOOGLE_API_SCOPES: ['https://www.googleapis.com/auth/spreadsheets'],
-
-  // Sheets API - Service Account JSON file
-  GOOGLE_CREDENTIALS_FILE: './sheetsapicredentials.json',
-
-  // Gmail OAuth2 Credentials from local file
   OAUTH: {
-    user: process.env.GMAIL_USER,
     clientId: gmailCreds.client_id,
     clientSecret: gmailCreds.client_secret,
     redirectUri: gmailCreds.redirect_uris[0],
-    refreshToken: gmailCreds.refresh_token,
+    refreshToken: gmailToken.refresh_token,
+    user: 'goldwebdesigns5@gmail.com', // replace with your Gmail address
   },
-
-  // Email Template
+  GOOGLE_CREDENTIALS_FILE: './sheetsapicredentials.json',
+  GOOGLE_API_SCOPES: ['https://www.googleapis.com/auth/spreadsheets'],
+  SHEET_ID: '1Q4OxZ6hjoUjzPuDkcJi6rlM4FNjWYHe_Kd-vDgupp98',
+  SHEET_RANGE: 'AutomatedContacts!A2:F',
   EMAIL_TEMPLATE: {
-    subject: (company) => `Special Offer for ${company}`,
-    body: (company) => `Hi ${company},\n\nWe wanted to reach out with a special opportunity for your business.\n\nPlease reply if you're interested.\n\nBest,\nYour Company`,
+    subject: (name) => `Hi ${name}, we'd love to connect`,
+    body: (name) => `Hello ${name},\n\nHere's your message.\n\nBest,\nTeam`,
   },
 };
