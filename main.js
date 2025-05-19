@@ -2,6 +2,9 @@ const { google } = require('googleapis');
 const nodemailer = require('nodemailer');
 const config = require('./config');
 
+// === Testing Flag ===
+const TESTING_MODE = true; // Set to false to actually send emails
+
 // === Auth for Google Sheets ===
 const sheetsAuth = new google.auth.GoogleAuth({
   keyFile: config.GOOGLE_CREDENTIALS_FILE,
@@ -57,6 +60,16 @@ async function run() {
       subject: config.EMAIL_TEMPLATE.subject(companyName),
       text: config.EMAIL_TEMPLATE.body(companyName),
     };
+
+    if (TESTING_MODE) {
+      console.log(`🔍 TEST EMAIL`);
+      console.log(`From: ${mailOptions.from}`);
+      console.log(`To: ${mailOptions.to}`);
+      console.log(`Subject: ${mailOptions.subject}`);
+      console.log(`Body:\n${mailOptions.text}`);
+      console.log('---');
+      continue; // Skip sending and sheet update
+    }
 
     try {
       await transporter.sendMail(mailOptions);
