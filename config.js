@@ -14,7 +14,7 @@ module.exports = {
     user: 'goldwebdesigns5@gmail.com', // replace with your Gmail address
   },
   GOOGLE_CREDENTIALS_FILE: './sheetsapicredentials.json',
-  GOOGLE_API_SCOPES: ['https://www.googleapis.com/auth/spreadsheets'],
+  GOOGLE_API_SCOPES: ['https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/gmail.send'],
   SHEET_ID: '1Q4OxZ6hjoUjzPuDkcJi6rlM4FNjWYHe_Kd-vDgupp98',
   SHEET_RANGE: 'AutomatedContacts!A2:F',
   EMAIL_TEMPLATE: {
