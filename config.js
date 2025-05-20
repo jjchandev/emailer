@@ -57,7 +57,13 @@ WhatsApp: +84 909 427 085
                 Check out our works
               </a>
             </p>
-            <p>Looking forward to chatting,<br>Binh Le<br>WhatsApp: +84 909 427 085</p>
+               <p>Looking forward to chatting,<br>
+               Binh Le<br>
+               <a href="https://wa.me/84909427085" target="_blank"
+                  style="color:#0073e6;text-decoration:none;">
+                 WhatsApp: +84 909 427 085
+               </a>
+            </p>
           </td></tr>
           <tr><td style="padding:10px;font-size:12px;color:#999;text-align:center;">
             © 2025 Gold Web Designs. All rights reserved.
