@@ -52,11 +52,18 @@ WhatsApp: +84 909 427 085
               </a>
             </p>
                 <p style="text-align:center;margin-top:10px;">
-              <a href="https://goldwebdesigns.com/" target="_blank"
-                 style="display:inline-block;padding:12px 24px;text-decoration:none;background:#28a745;color:#fff;border-radius:4px;">
-                Check out our works
-              </a>
-            </p>
+  <a href="https://goldwebdesigns.com/" target="_blank"
+     style="display:inline-block;padding:8px 20px;
+            text-decoration:none;
+            background:transparent;
+            color:#0073e6;
+            border:1px solid #0073e6;
+            border-radius:4px;
+            font-size:14px;
+            opacity:0.75;">
+    Check out our works
+  </a>
+</p>
                <p>Looking forward to chatting,<br>
                Binh Le<br>
                <a href="https://wa.me/84909427085" target="_blank"
