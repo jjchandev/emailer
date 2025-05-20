@@ -22,7 +22,7 @@ module.exports = {
   text: name => `
 Hi ${name},
 
-I came across your Instagram profile and wanted to reach out personally. I'm Binh Le from Gold Web Designs, and I specialize in helping roofing companies build high-performing websites that bring in real leads — not just likes.
+I came across your Instagram profile and wanted to reach out personally. I'm Binh Le from Gold Web Designs Singapore, and I specialize in helping clinic services build high-performing websites that bring in real leads — not just likes.
 
 Book a free 30‑minute strategy session: https://calendly.com/goldwebdesigns5/30min
 
@@ -37,13 +37,13 @@ WhatsApp: +84 909 427 085
   <body style="margin:0;padding:20px;background:#f4f4f4;font-family:Arial,sans-serif;color:#333;">
     <table width="100%" cellpadding="0" cellspacing="0">
       <tr><td align="center" style="padding:20px;">
-        <img src="https://www.goldwebdesigns.com/logo.webp" alt="Gold Web Designs" width="150" style="display:block;">
+        <img src="https://www.goldwebdesigns.com/logo.webp" alt="Gold Web Designs" width="100" style="display:block;">
       </td></tr>
       <tr><td align="center">
         <table width="600" cellpadding="0" cellspacing="0" style="background:#fff;border:1px solid #ddd;">
           <tr><td style="padding:30px;">
             <h2 style="margin-top:0;">Hi ${name},</h2>
-            <p>I came across your Instagram profile and wanted to reach out personally. I'm <strong>Binh Le</strong> from Gold Web Designs, and I specialize in helping roofing companies build high‑performing websites that bring in real leads — not just likes.</p>
+            <p>I came across your Instagram profile and wanted to reach out personally. I'm <strong>Binh Le</strong> from Gold Web Designs Singapore, and I specialize in helping clinic services build high‑performing websites that bring in real leads — not just likes.</p>
             <p>I’d love to offer you a <strong>free 30‑minute strategy session</strong> to explore how your site can turn visitors into paying customers.</p>
             <p style="text-align:center;">
               <a href="https://calendly.com/goldwebdesigns5/30min" target="_blank"
