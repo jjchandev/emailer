@@ -30,7 +30,7 @@ Regards,
 Binh Le
 WhatsApp: +84 909 427 085
 `,
-  html: name => `
+ html: name => `
 <!DOCTYPE html>
 <html lang="en">
   <head><meta charset="UTF-8"></head>
@@ -51,26 +51,41 @@ WhatsApp: +84 909 427 085
                 Book Your Session
               </a>
             </p>
-                <p style="text-align:center;margin-top:10px;">
-  <a href="https://goldwebdesigns.com/" target="_blank"
-     style="display:inline-block;padding:8px 20px;
-            text-decoration:none;
-            background:transparent;
-            color:#0073e6;
-            border:1px solid #0073e6;
-            border-radius:4px;
-            font-size:14px;
-            opacity:0.75;">
-    Check out our works
-  </a>
-</p>
-               <p>Looking forward to chatting,<br>
+            <p style="text-align:center;margin-top:10px;">
+              <a href="https://goldwebdesigns.com/" target="_blank"
+                 style="display:inline-block;padding:8px 20px;
+                        text-decoration:none;
+                        background:transparent;
+                        color:#0073e6;
+                        border:1px solid #0073e6;
+                        border-radius:4px;
+                        font-size:14px;
+                        opacity:0.75;">
+                Check out our works
+              </a>
+            </p>
+            <p>Looking forward to chatting,<br>
                Binh Le<br>
                <a href="https://wa.me/84909427085" target="_blank"
                   style="color:#0073e6;text-decoration:none;">
                  WhatsApp: +84 909 427 085
                </a>
             </p>
+
+            <!-- Social Media Links -->
+            <hr style="margin:30px 0;">
+            <p style="text-align:center;">
+              <a href="https://www.facebook.com/goldwebdesigns" target="_blank" style="margin:0 10px;text-decoration:none;">
+                <img src="https://cdn-icons-png.flaticon.com/24/733/733547.png" alt="Facebook" width="24" height="24" style="vertical-align:middle;">
+              </a>
+              <a href="https://www.linkedin.com/company/gold-web-designs/" target="_blank" style="margin:0 10px;text-decoration:none;">
+                <img src="https://cdn-icons-png.flaticon.com/24/145/145807.png" alt="LinkedIn" width="24" height="24" style="vertical-align:middle;">
+              </a>
+              <a href="https://x.com/goldwebdesigns" target="_blank" style="margin:0 10px;text-decoration:none;">
+                <img src="https://cdn-icons-png.flaticon.com/24/3670/3670151.png" alt="X" width="24" height="24" style="vertical-align:middle;">
+              </a>
+            </p>
+
           </td></tr>
           <tr><td style="padding:10px;font-size:12px;color:#999;text-align:center;">
             © 2025 Gold Web Designs. All rights reserved.
