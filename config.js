@@ -10,6 +10,7 @@ module.exports = {
     clientId: gmailCreds.client_id,
     clientSecret: gmailCreds.client_secret,
     redirectUri: gmailCreds.redirect_uris[0],
+    accessToken: gmailToken.access_token,
     refreshToken: gmailToken.refresh_token,
     user: 'goldwebdesigns5@gmail.com', // replace with your Gmail address
   },

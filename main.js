@@ -37,14 +37,6 @@ async function run() {
     return;
   }
 
-  // Setup Gmail transporter with access token
-  const accessToken = await oAuth2Client.getAccessToken();
-  console.log('Credentials Check:', {
-  user: config.OAUTH.user,
-  clientId: config.OAUTH.clientId?.slice(0, 12) + '...', // Partial to avoid exposing full ID
-  clientSecret: config.OAUTH.clientSecret?.slice(0, 5) + '...',
-  refreshToken: config.OAUTH.refreshToken?.slice(0, 8) + '...',
-});
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -53,7 +45,7 @@ async function run() {
       clientId: config.OAUTH.clientId,
       clientSecret: config.OAUTH.clientSecret,
       refreshToken: config.OAUTH.refreshToken,
-      accessToken: accessToken.token
+      accessToken: config.OAUTH.accessToken
     },
   });
 
