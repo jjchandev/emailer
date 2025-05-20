@@ -117,7 +117,7 @@ async function run() {
 
     // Build raw MIME payload
     const rawEmail = makeRawMessage({
-      from: config.OAUTH.user,
+      from: 'Gold Web Designs',
       to,
       subject,
       textBody,

@@ -88,6 +88,7 @@ WhatsApp: +84 909 427 085
 
           </td></tr>
           <tr><td style="padding:10px;font-size:12px;color:#999;text-align:center;">
+            213 Serangoon Avenue 4, Singapore<br>
             © 2025 Gold Web Designs. All rights reserved.
           </td></tr>
         </table>
