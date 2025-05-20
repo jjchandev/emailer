@@ -28,6 +28,34 @@ function base64urlEncode(str) {
     .replace(/=+$/, '');
 }
 
+// Helper: build multipart MIME message
+function makeRawMessage({ from, to, subject, textBody, htmlBody }) {
+  const boundary = "__MY_BOUNDARY__";
+  let mime = "";
+
+  // Headers
+  mime += `From: ${from}\r\n`;
+  mime += `To: ${to}\r\n`;
+  mime += `Subject: ${subject}\r\n`;
+  mime += `MIME-Version: 1.0\r\n`;
+  mime += `Content-Type: multipart/alternative; boundary="${boundary}"\r\n\r\n`;
+
+  // Plain‑text part
+  mime += `--${boundary}\r\n`;
+  mime += `Content-Type: text/plain; charset="UTF-8"\r\n\r\n`;
+  mime += `${textBody}\r\n\r\n`;
+
+  // HTML part
+  mime += `--${boundary}\r\n`;
+  mime += `Content-Type: text/html; charset="UTF-8"\r\n\r\n`;
+  mime += `${htmlBody}\r\n\r\n`;
+
+  // End
+  mime += `--${boundary}--`;
+
+  return base64urlEncode(mime);
+}
+
 // Helper: send email via Gmail API (raw)
 async function sendEmail(accessToken, rawEmail) {
   const options = {
@@ -52,7 +80,6 @@ async function sendEmail(accessToken, rawEmail) {
         }
       });
     });
-
     req.on('error', reject);
     req.write(JSON.stringify({ raw: rawEmail }));
     req.end();
@@ -60,68 +87,61 @@ async function sendEmail(accessToken, rawEmail) {
 }
 
 async function run() {
-  // Get Google Sheets client and fetch rows
-  const client = await sheetsAuth.getClient();
-  const sheets = google.sheets({ version: 'v4', auth: client });
-
-  const res = await sheets.spreadsheets.values.get({
+  // Fetch rows from Sheets
+  const sheetsClient = await sheetsAuth.getClient();
+  const sheets = google.sheets({ version: 'v4', auth: sheetsClient });
+  const { data } = await sheets.spreadsheets.values.get({
     spreadsheetId: config.SHEET_ID,
     range: config.SHEET_RANGE,
   });
 
-  const rows = res.data.values;
-  if (!rows || rows.length === 0) {
+  const rows = data.values || [];
+  if (!rows.length) {
     console.log('No data found.');
     return;
   }
 
-  // Get fresh access token for Gmail API
+  // Get new Gmail access token
   const tokenResponse = await oAuth2Client.getAccessToken();
   const accessToken = tokenResponse.token;
   if (!accessToken) throw new Error('Failed to get access token');
 
   for (let i = 0; i < rows.length; i++) {
     const [link, companyName, website, phone, email, status] = rows[i];
+    if (status?.toLowerCase().trim() === 'sent' || !email) continue;
 
-    if (status?.toLowerCase().trim() === 'sent') continue; // skip sent
-    if (!email) continue; // skip no email
+    const to = TESTING_MODE ? 'jiajiechandev@gmail.com' : email;
+    const subject = config.EMAIL_TEMPLATE.subject(companyName);
+    const textBody = config.EMAIL_TEMPLATE.text(companyName);
+    const htmlBody = config.EMAIL_TEMPLATE.html(companyName);
 
-    const recipientEmail = TESTING_MODE ? 'jiajiechandev@gmail.com' : email;
+    // Build raw MIME payload
+    const rawEmail = makeRawMessage({
+      from: config.OAUTH.user,
+      to,
+      subject,
+      textBody,
+      htmlBody,
+    });
 
-    // Compose RFC 2822 email
-    const emailText = config.EMAIL_TEMPLATE.body(companyName);
-    const subjectText = config.EMAIL_TEMPLATE.subject(companyName);
-
-    const emailLines = [
-      `From: ${config.OAUTH.user}`,
-      `To: ${recipientEmail}`,
-      `Subject: ${subjectText}`,
-      'Content-Type: text/plain; charset="UTF-8"',
-      '',
-      emailText,
-    ];
-
-    const rawEmail = base64urlEncode(emailLines.join('\r\n'));
-
-    // Log details
-    console.log(`🔍 EMAIL DETAILS`);
-    console.log(`Row: ${i + 2}`);
-    console.log(`From: ${config.OAUTH.user}`);
-    console.log(`To: ${recipientEmail}`);
-    console.log(`Subject: ${subjectText}`);
-    console.log(`Body:\n${emailText}`);
-    console.log('---');
+    // Log for debugging
+    console.log(`🔍 EMAIL DETAILS
+Row: ${i + 2}
+From: ${config.OAUTH.user}
+To: ${to}
+Subject: ${subject}
+---`);
 
     try {
       await sendEmail(accessToken, rawEmail);
-      console.log(`✅ Email sent to ${companyName} <${recipientEmail}>`);
+      console.log(`✅ Email sent to ${companyName} <${to}>`);
     } catch (err) {
-      console.error(`❌ Failed to send to ${recipientEmail}: ${err.message}`);
-      continue; // skip updating status if failed
+      console.error(`❌ Failed to send to ${to}: ${err.message}`);
+      continue;
     }
 
+    // Mark as sent in Sheets if not testing
     if (!TESTING_MODE) {
-      // Update status to 'sent' in sheet
       const statusCell = `AutomatedContacts!F${i + 2}`;
       await sheets.spreadsheets.values.update({
         spreadsheetId: config.SHEET_ID,
