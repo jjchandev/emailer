@@ -3,7 +3,7 @@ const https = require('https');
 const config = require('./config');
 
 // === Testing Flag ===
-const TESTING_MODE = true; // Set to false to actually send emails
+const TESTING_MODE = false; // Set to false to actually send emails
 
 // === Auth for Google Sheets ===
 const sheetsAuth = new google.auth.GoogleAuth({
@@ -117,7 +117,7 @@ async function run() {
 
     // Build raw MIME payload
     const rawEmail = makeRawMessage({
-      from: 'Gold Web Designs',
+      from: config.OAUTH.user,
       to,
       subject,
       textBody,
