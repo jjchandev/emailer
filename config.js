@@ -52,7 +52,7 @@ WhatsApp: +84 909 427 085
               </a>
             </p>
                 <p style="text-align:center;margin-top:10px;">
-              <a href="https://goldwebdesigns.com/works" target="_blank"
+              <a href="https://goldwebdesigns.com/" target="_blank"
                  style="display:inline-block;padding:12px 24px;text-decoration:none;background:#28a745;color:#fff;border-radius:4px;">
                 Check out our works
               </a>
