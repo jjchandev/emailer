@@ -37,7 +37,7 @@ WhatsApp: +84 909 427 085
   <body style="margin:0;padding:20px;background:#f4f4f4;font-family:Arial,sans-serif;color:#333;">
     <table width="100%" cellpadding="0" cellspacing="0">
       <tr><td align="center" style="padding:20px;">
-        <img src="https://yourdomain.com/logo.png" alt="Gold Web Designs" width="150" style="display:block;">
+        <img src="https://www.goldwebdesigns.com/logo.webp" alt="Gold Web Designs" width="150" style="display:block;">
       </td></tr>
       <tr><td align="center">
         <table width="600" cellpadding="0" cellspacing="0" style="background:#fff;border:1px solid #ddd;">
@@ -49,6 +49,12 @@ WhatsApp: +84 909 427 085
               <a href="https://calendly.com/goldwebdesigns5/30min" target="_blank"
                  style="display:inline-block;padding:12px 24px;text-decoration:none;background:#0073e6;color:#fff;border-radius:4px;">
                 Book Your Session
+              </a>
+            </p>
+                <p style="text-align:center;margin-top:10px;">
+              <a href="https://goldwebdesigns.com/works" target="_blank"
+                 style="display:inline-block;padding:12px 24px;text-decoration:none;background:#28a745;color:#fff;border-radius:4px;">
+                Check out our works
               </a>
             </p>
             <p>Looking forward to chatting,<br>Binh Le<br>WhatsApp: +84 909 427 085</p>
