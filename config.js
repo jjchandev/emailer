@@ -7,12 +7,11 @@ const gmailToken = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'gmail_tok
 
 module.exports = {
   OAUTH: {
-    clientId: gmailCreds.client_id,
-    clientSecret: gmailCreds.client_secret,
-    redirectUri: gmailCreds.redirect_uris[0],
-    accessToken: gmailToken.access_token,
-    refreshToken: gmailToken.refresh_token,
-    user: 'goldwebdesigns5@gmail.com', // replace with your Gmail address
+    clientId: '246923871021-j3krkck8d5m1pnh43stsrb01iem3olof.apps.googleusercontent.com',
+    clientSecret: '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',
+    redirectUri: 'http://localhost', // or your redirect URI
+    refreshToken: '1//0gLD6ZKWZlQ6hCgYIARAAGBASNwF-L9IrNe56DNMT7b0C91z4_p6eYPKutPaH5NzvuB69wBPkpxegM5BMronGrdDDESA0cQeHuN4',
+    user: 'goldwebdesigns5@gmail.com',
   },
   GOOGLE_CREDENTIALS_FILE: './sheetsapicredentials.json',
   GOOGLE_API_SCOPES: ['https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/gmail.send'],

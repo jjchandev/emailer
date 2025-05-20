@@ -1,5 +1,5 @@
 const { google } = require('googleapis');
-const nodemailer = require('nodemailer');
+const https = require('https');
 const config = require('./config');
 
 // === Testing Flag ===
@@ -17,15 +17,53 @@ const oAuth2Client = new google.auth.OAuth2(
   config.OAUTH.clientSecret,
   config.OAUTH.redirectUri
 );
-
 oAuth2Client.setCredentials({ refresh_token: config.OAUTH.refreshToken });
-oAuth2Client.scopes = config.OAUTH.scopes;
+
+// Helper: base64url encode for Gmail API raw email
+function base64urlEncode(str) {
+  return Buffer.from(str)
+    .toString('base64')
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=+$/, '');
+}
+
+// Helper: send email via Gmail API (raw)
+async function sendEmail(accessToken, rawEmail) {
+  const options = {
+    hostname: 'gmail.googleapis.com',
+    path: '/gmail/v1/users/me/messages/send',
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+    },
+  };
+
+  return new Promise((resolve, reject) => {
+    const req = https.request(options, (res) => {
+      let body = '';
+      res.on('data', (chunk) => (body += chunk));
+      res.on('end', () => {
+        if (res.statusCode >= 200 && res.statusCode < 300) {
+          resolve(JSON.parse(body));
+        } else {
+          reject(new Error(`Status: ${res.statusCode} - ${body}`));
+        }
+      });
+    });
+
+    req.on('error', reject);
+    req.write(JSON.stringify({ raw: rawEmail }));
+    req.end();
+  });
+}
 
 async function run() {
+  // Get Google Sheets client and fetch rows
   const client = await sheetsAuth.getClient();
   const sheets = google.sheets({ version: 'v4', auth: client });
 
-  // Fetch data from sheet
   const res = await sheets.spreadsheets.values.get({
     spreadsheetId: config.SHEET_ID,
     range: config.SHEET_RANGE,
@@ -37,64 +75,62 @@ async function run() {
     return;
   }
 
-  const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      type: 'OAuth2',
-      user: config.OAUTH.user,
-      clientId: config.OAUTH.clientId,
-      clientSecret: config.OAUTH.clientSecret,
-      refreshToken: config.OAUTH.refreshToken,
-      accessToken: config.OAUTH.accessToken
-    },
-  });
+  // Get fresh access token for Gmail API
+  const tokenResponse = await oAuth2Client.getAccessToken();
+  const accessToken = tokenResponse.token;
+  if (!accessToken) throw new Error('Failed to get access token');
 
-  // Iterate through each row and process
   for (let i = 0; i < rows.length; i++) {
-  const [link, companyName, website, phone, email, status] = rows[i];
+    const [link, companyName, website, phone, email, status] = rows[i];
 
-  if (status?.toLowerCase().trim() === 'sent') continue; // skip if already sent
-  if (!email) continue; // skip if email undefined
+    if (status?.toLowerCase().trim() === 'sent') continue; // skip sent
+    if (!email) continue; // skip no email
 
-  // Override recipient in test mode
-  const recipientEmail = TESTING_MODE ? 'jiajiechandev@gmail.com' : email;
+    const recipientEmail = TESTING_MODE ? 'jiajiechandev@gmail.com' : email;
 
-  const mailOptions = {
-    from: config.OAUTH.user,
-    to: recipientEmail,
-    subject: config.EMAIL_TEMPLATE.subject(companyName),
-    text: config.EMAIL_TEMPLATE.body(companyName),
-  };
+    // Compose RFC 2822 email
+    const emailText = config.EMAIL_TEMPLATE.body(companyName);
+    const subjectText = config.EMAIL_TEMPLATE.subject(companyName);
 
-  // Log email info always
-  console.log(`🔍 EMAIL DETAILS`);
-  console.log(`Row: ${i + 2}`);
-  console.log(`From: ${mailOptions.from}`);
-  console.log(`To: ${mailOptions.to}`);
-  console.log(`Subject: ${mailOptions.subject}`);
-  console.log(`Body:\n${mailOptions.text}`);
-  console.log('---');
+    const emailLines = [
+      `From: ${config.OAUTH.user}`,
+      `To: ${recipientEmail}`,
+      `Subject: ${subjectText}`,
+      'Content-Type: text/plain; charset="UTF-8"',
+      '',
+      emailText,
+    ];
 
-  try {
-    await transporter.sendMail(mailOptions);
-    console.log(`✅ Email sent to ${companyName} <${recipientEmail}>`);
-  } catch (err) {
-    console.error(`❌ Failed to send to ${recipientEmail}: ${err.message}`);
-    continue; // skip updating status if email failed
+    const rawEmail = base64urlEncode(emailLines.join('\r\n'));
+
+    // Log details
+    console.log(`🔍 EMAIL DETAILS`);
+    console.log(`Row: ${i + 2}`);
+    console.log(`From: ${config.OAUTH.user}`);
+    console.log(`To: ${recipientEmail}`);
+    console.log(`Subject: ${subjectText}`);
+    console.log(`Body:\n${emailText}`);
+    console.log('---');
+
+    try {
+      await sendEmail(accessToken, rawEmail);
+      console.log(`✅ Email sent to ${companyName} <${recipientEmail}>`);
+    } catch (err) {
+      console.error(`❌ Failed to send to ${recipientEmail}: ${err.message}`);
+      continue; // skip updating status if failed
+    }
+
+    if (!TESTING_MODE) {
+      // Update status to 'sent' in sheet
+      const statusCell = `AutomatedContacts!F${i + 2}`;
+      await sheets.spreadsheets.values.update({
+        spreadsheetId: config.SHEET_ID,
+        range: statusCell,
+        valueInputOption: 'RAW',
+        requestBody: { values: [['sent']] },
+      });
+    }
   }
-
-  if (!TESTING_MODE) {
-    const statusCell = `AutomatedContacts!F${i + 2}`; // Column F = Status
-    await sheets.spreadsheets.values.update({
-      spreadsheetId: config.SHEET_ID,
-      range: statusCell,
-      valueInputOption: 'RAW',
-      requestBody: {
-        values: [['sent']],
-      },
-    });
-  }
-}
 }
 
 run().catch(console.error);
