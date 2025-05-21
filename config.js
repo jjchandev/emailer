@@ -25,7 +25,7 @@ Hi ${name},
 
 ${opener ? `\n\n${opener}` : ''}
 
-I'm Binh Le from Gold Web Designs Singapore, and I help cafes build custom websites that bring in customers — with features like online menus, reservation booking, and seasonal promotions tailored to the café experience.
+I'm Binh Le from Gold Web Designs Singapore, and I help ${niche} build custom websites that bring in real customers — by making it easy for them to find you online.
 
 If you want, I can show you some easy ways to get more customers from your website. It’s free and only takes 30 minutes.
 
@@ -50,7 +50,7 @@ WhatsApp: +84 909 427 085
           <tr><td style="padding:30px;">
             <h2 style="margin-top:0;">Hi ${name},</h2>
             ${opener ? `<p>${opener}</p>` : ''}
-            <p>I'm <strong>Binh Le</strong> from Gold Web Designs Singapore, and I help cafes build custom websites that bring in real customers — with features like online menus, reservation booking, and seasonal promotions tailored to the café experience.</p>
+            <p>I'm <strong>Binh Le</strong> from Gold Web Designs Singapore, and I help ${niche} build custom websites that bring in real customers — by making it easy for them to find you online.</p>
             <p>If you want, I can show you some easy ways to get more customers from your website. It’s free and only takes 30 minutes.</p>
 <p style="text-align:center;">
   <a href="https://calendly.com/goldwebdesigns5/30min" target="_blank"
@@ -71,7 +71,7 @@ WhatsApp: +84 909 427 085
                 Check out our works
               </a>
             </p>
-            <p>Looking forward to chatting,<br>
+            <p>Best regards,<br>
                Binh Le<br>
                <a href="https://wa.me/84909427085" target="_blank"
                   style="color:#0073e6;text-decoration:none;">
