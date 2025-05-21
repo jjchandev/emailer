@@ -27,7 +27,9 @@ ${opener ? `\n\n${opener}` : ''}
 
 I'm Binh Le from Gold Web Designs Singapore, and I help cafes build custom websites that bring in customers — with features like online menus, reservation booking, and seasonal promotions tailored to the café experience.
 
-Book a free 30‑minute strategy session: https://calendly.com/goldwebdesigns5/30min
+If you want, I can show you some easy ways to get more customers from your website. It’s free and only takes 30 minutes.
+
+Book a free chat: https://calendly.com/goldwebdesigns5/30min
 
 Regards,
 Binh Le
@@ -49,13 +51,13 @@ WhatsApp: +84 909 427 085
             <h2 style="margin-top:0;">Hi ${name},</h2>
             ${opener ? `<p>${opener}</p>` : ''}
             <p>I'm <strong>Binh Le</strong> from Gold Web Designs Singapore, and I help cafes build custom websites that bring in real customers — with features like online menus, reservation booking, and seasonal promotions tailored to the café experience.</p>
-            <p>I’d love to offer you a <strong>free 30‑minute strategy session</strong> to explore how your site can turn visitors into paying customers.</p>
-            <p style="text-align:center;">
-              <a href="https://calendly.com/goldwebdesigns5/30min" target="_blank"
-                 style="display:inline-block;padding:12px 24px;text-decoration:none;background:#0073e6;color:#fff;border-radius:4px;">
-                Book Your Session
-              </a>
-            </p>
+            <p>If you want, I can show you some easy ways to get more customers from your website. It’s free and only takes 30 minutes.</p>
+<p style="text-align:center;">
+  <a href="https://calendly.com/goldwebdesigns5/30min" target="_blank"
+     style="display:inline-block;padding:12px 24px;text-decoration:none;background:#0073e6;color:#fff;border-radius:4px;">
+    Book a Free Chat
+  </a>
+</p>
             <p style="text-align:center;margin-top:10px;">
               <a href="https://goldwebdesigns.com/" target="_blank"
                  style="display:inline-block;padding:8px 20px;
