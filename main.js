@@ -3,7 +3,7 @@ const https = require('https');
 const config = require('./config');
 
 // === Testing Flag ===
-const TESTING_MODE = false; // Set to false to actually send emails
+const TESTING_MODE = true; // Set to false to actually send emails
 
 // === Auth for Google Sheets ===
 const sheetsAuth = new google.auth.GoogleAuth({
@@ -107,13 +107,14 @@ async function run() {
   if (!accessToken) throw new Error('Failed to get access token');
 
   for (let i = 0; i < rows.length; i++) {
-    const [link, companyName, website, phone, email, status] = rows[i];
+    const [link, companyName, website, phone, email, status, niche, opener] = rows[i];
+    console.log(opener)
     if (status?.toLowerCase().trim() === 'sent' || !email) continue;
 
     const to = TESTING_MODE ? 'jiajiechandev@gmail.com' : email;
     const subject = config.EMAIL_TEMPLATE.subject(companyName);
-    const textBody = config.EMAIL_TEMPLATE.text(companyName);
-    const htmlBody = config.EMAIL_TEMPLATE.html(companyName);
+    const textBody = config.EMAIL_TEMPLATE.text(companyName, opener);
+    const htmlBody = config.EMAIL_TEMPLATE.html(companyName, opener);
 
     // Build raw MIME payload
     const rawEmail = makeRawMessage({

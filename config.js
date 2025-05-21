@@ -16,13 +16,16 @@ module.exports = {
   GOOGLE_CREDENTIALS_FILE: './sheetsapicredentials.json',
   GOOGLE_API_SCOPES: ['https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/gmail.send'],
   SHEET_ID: '1Q4OxZ6hjoUjzPuDkcJi6rlM4FNjWYHe_Kd-vDgupp98',
-  SHEET_RANGE: 'AutomatedContacts!A2:F',
- EMAIL_TEMPLATE: {
+  SHEET_RANGE: 'AutomatedContacts!A2:H',
+  EMAIL_TEMPLATE: {
   subject: name => `Hi ${name}, we'd love to connect`,
-  text: name => `
+
+  text: (name, opener) => `
 Hi ${name},
 
-I came across your Instagram profile and wanted to reach out personally. I'm Binh Le from Gold Web Designs Singapore, and I specialize in helping clinic services build high-performing websites that bring in real leads — not just likes.
+${opener ? `\n\n${opener}` : ''}
+
+I'm Binh Le from Gold Web Designs Singapore, and I help cafes build custom websites that bring in customers — with features like online menus, reservation booking, and seasonal promotions tailored to the café experience.
 
 Book a free 30‑minute strategy session: https://calendly.com/goldwebdesigns5/30min
 
@@ -30,7 +33,8 @@ Regards,
 Binh Le
 WhatsApp: +84 909 427 085
 `,
- html: name => `
+
+  html: (name, opener) => `
 <!DOCTYPE html>
 <html lang="en">
   <head><meta charset="UTF-8"></head>
@@ -43,7 +47,8 @@ WhatsApp: +84 909 427 085
         <table width="600" cellpadding="0" cellspacing="0" style="background:#fff;border:1px solid #ddd;">
           <tr><td style="padding:30px;">
             <h2 style="margin-top:0;">Hi ${name},</h2>
-            <p>I came across your Instagram profile and wanted to reach out personally. I'm <strong>Binh Le</strong> from Gold Web Designs Singapore, and I specialize in helping clinic services build high‑performing websites that bring in real leads — not just likes.</p>
+            ${opener ? `<p>${opener}</p>` : ''}
+            <p>I'm <strong>Binh Le</strong> from Gold Web Designs Singapore, and I help cafes build custom websites that bring in real customers — with features like online menus, reservation booking, and seasonal promotions tailored to the café experience.</p>
             <p>I’d love to offer you a <strong>free 30‑minute strategy session</strong> to explore how your site can turn visitors into paying customers.</p>
             <p style="text-align:center;">
               <a href="https://calendly.com/goldwebdesigns5/30min" target="_blank"
@@ -71,21 +76,6 @@ WhatsApp: +84 909 427 085
                  WhatsApp: +84 909 427 085
                </a>
             </p>
-
-            <!-- Social Media Links -->
-            <hr style="margin:30px 0;">
-            <p style="text-align:center;">
-              <a href="https://www.facebook.com/goldwebdesigns" target="_blank" style="margin:0 10px;text-decoration:none;">
-                <img src="https://cdn-icons-png.flaticon.com/24/733/733547.png" alt="Facebook" width="24" height="24" style="vertical-align:middle;">
-              </a>
-              <a href="https://www.linkedin.com/company/gold-web-designs/" target="_blank" style="margin:0 10px;text-decoration:none;">
-                <img src="https://cdn-icons-png.flaticon.com/24/145/145807.png" alt="LinkedIn" width="24" height="24" style="vertical-align:middle;">
-              </a>
-              <a href="https://x.com/goldwebdesigns" target="_blank" style="margin:0 10px;text-decoration:none;">
-                <img src="https://cdn-icons-png.flaticon.com/24/3670/3670151.png" alt="X" width="24" height="24" style="vertical-align:middle;">
-              </a>
-            </p>
-
           </td></tr>
           <tr><td style="padding:10px;font-size:12px;color:#999;text-align:center;">
             213 Serangoon Avenue 4, Singapore<br>
@@ -97,5 +87,5 @@ WhatsApp: +84 909 427 085
   </body>
 </html>
 `,
-},
+}
 };
