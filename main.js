@@ -108,7 +108,7 @@ async function run() {
 
   for (let i = 0; i < rows.length; i++) {
     const [link, companyName, website, phone, email, status, niche, opener] = rows[i];
-    console.log(opener)
+    
     if (status?.toLowerCase().trim() === 'sent' || !email) continue;
 
     const to = TESTING_MODE ? 'jiajiechandev@gmail.com' : email;
