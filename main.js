@@ -113,8 +113,8 @@ async function run() {
 
     const to = TESTING_MODE ? 'jiajiechandev@gmail.com' : email;
     const subject = config.EMAIL_TEMPLATE.subject(companyName);
-    const textBody = config.EMAIL_TEMPLATE.text(companyName, opener);
-    const htmlBody = config.EMAIL_TEMPLATE.html(companyName, opener);
+    const textBody = config.EMAIL_TEMPLATE.text(companyName, opener, niche);
+    const htmlBody = config.EMAIL_TEMPLATE.html(companyName, opener, niche);
 
     // Build raw MIME payload
     const rawEmail = makeRawMessage({

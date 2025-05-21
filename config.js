@@ -20,7 +20,7 @@ module.exports = {
   EMAIL_TEMPLATE: {
   subject: name => `Hi ${name}, we'd love to connect`,
 
-  text: (name, opener) => `
+  text: (name, opener, niche) => `
 Hi ${name},
 
 ${opener ? `\n\n${opener}` : ''}
@@ -36,7 +36,7 @@ Binh Le
 WhatsApp: +84 909 427 085
 `,
 
-  html: (name, opener) => `
+  html: (name, opener, niche) => `
 <!DOCTYPE html>
 <html lang="en">
   <head><meta charset="UTF-8"></head>
